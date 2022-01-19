@@ -1,0 +1,130 @@
+.Header {
+    position: relative;
+    top: 0;
+    /* Stick it to the top */
+    min-height: 50px;
+    grid-template-areas: "logo nav";
+    /* Cosmetics */
+    background-color: #fbfdff;
+    font-family: 'Rubik';
+    font-weight: 500;
+    overflow: hidden;
+}
+
+.Logo {
+    vertical-align: middle !important;
+    margin-top: 20px;
+}
+
+.Nav {
+    justify-items: center;
+    float: right;
+    display: inline-block;
+    line-height: 32px;
+}
+
+.Nav a {
+    color: #757575;
+    font-size: 18px;
+    transition: all .4s ease;
+    font-weight: 800 !important;
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: middle !important;
+    position: relative;
+    padding: 48.5px 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.Nav a:hover {
+    transform: scale(1.1);
+}
+
+.Nav button {
+    padding: 10px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 600;
+    background-color: rgba(255, 0, 0, 0.5);
+    box-shadow: 0px 5px 0px 0px rgba(255, 0, 0, 0.25);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 70ms;
+}
+
+.Nav button:active {
+    transform: translateY(3px);
+    box-shadow: 0px 2px 0px 0px rgba(255, 0, 0, 0.25);
+}
+
+.Burger {
+    display: none;
+    grid-area: burger;
+    margin: 0px 20px 0px 34px;
+    padding: 0px 0px 0px 0px;
+    justify-self: end;
+    font-size: 40px;
+    border: none;
+    background: none;
+    outline: none;
+    transition: 0.1s;
+}
+
+.Burger:active {
+    transform: scale(1.2);
+}
+
+@media (max-width: 700px) {
+    .Header {
+        grid-template-areas: "logo burger" "nav nav";
+    }
+    .Nav {
+        grid-template-rows: repeat(4, auto);
+        grid-template-columns: none;
+        grid-row-gap: 20px;
+        padding: 30px 0 30px;
+        background: rgba(40, 44, 47, 0.95);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .Burger {
+        display: inline;
+    }
+    .Nav a {
+        margin-left: 10px;
+        margin-left: 10px;
+    }
+}
+
+.NavAnimation-enter {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.NavAnimation-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 350ms, transform 350ms;
+}
+
+.NavAnimation-exit {
+    opacity: 1;
+}
+
+.NavAnimation-exit-active {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 350ms, transform 350ms;
+}
+
+.thm-container {
+    max-width: 100%;
+    background: transparent;
+    padding: 0 40px;
+    position: relative;
+}
