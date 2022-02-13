@@ -309,3 +309,60 @@ p {
     top: 50%;
     z-index: 99;
 }
+
+.slider-home-one .content {
+    text-align: center;
+    position: relative;
+    z-index: 999;
+}
+
+#minimal-bootstrap-carousel .carousel-caption .thm-container .box .content {
+    display: block;
+}
+
+#minimal-bootstrap-carousel {
+    margin-top: 0px;
+    position: relative;
+    z-index: 9999;
+}
+
+.slider-home-one .content h3 {
+    font-family: 'Pacifico';
+    font-size: 30px;
+    color: #FEC931;
+    -webkit-animation-delay: .5s;
+    animation-delay: .5s;
+    display: block;
+}
+
+
+/* Banner Styles */
+
+.page-title {
+    background-image: url(./Assets/bannerbg.jpg);
+    padding: 110px 0;
+}
+
+.welcome-section1 .welcome-content1 .title p {
+    color: #A40D12;
+    font-family: 'Pacifico';
+    font-size: 20px;
+}
+
+.img-responsive,
+.thumbnail a>img,
+.thumbnail>img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.welcome-section1 .welcome-content1 .title {
+    margin-bottom: 38px;
+}
+
+.welcome-section1 .welcome-content1 .title h3 {
+    font-size: 35px;
+    font-weight: bold;
+    color: #212121;
+}

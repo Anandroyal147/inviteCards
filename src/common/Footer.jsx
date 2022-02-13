@@ -1,6 +1,6 @@
 import "./Footer.css"
 export default function Footer() {
-    const mystyle = {
+                const mystyle = {
         color: "#FFFFFF",
         line_height: "40px"
     };
