@@ -35,7 +35,7 @@ const FacilitiesDetails = () => {
         <>
             <section class="welcome-section1 sec-pad">
                 <div class="thm-container">
-                    <div class="row">
+                    <div class="row spaceAround">
                         <div class="welcome-content1" style={{ padding_left: 0 }}>
                             <div class="title">
                                 <p>High</p>

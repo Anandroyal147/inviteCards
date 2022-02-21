@@ -1,0 +1,21 @@
+@media (max-width: 1024px) {
+    img {
+        max-width: 100%;
+    }
+    .corousel {
+        margin-top: 300px;
+        margin-top: 0px;
+        position: relative;
+        z-index: 9999;
+        height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-section .welcome-content {
+        margin-top: 60px;
+    }
+    .welcome-section .welcome-content {
+        padding-left: 0px;
+    }
+}

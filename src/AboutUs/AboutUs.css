@@ -73,3 +73,27 @@ element.style {
     right: 30px;
     transition: all .4s ease;
 }
+
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 480px) {
+    .breadcumb-wrapper ul.breadcumb {
+        padding-left: 40px !important;
+        padding-right: 50px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-section {
+        padding-bottom: 70px;
+    }
+}
+
+@media (max-width: 736px) {
+    .about-section .single-about {
+        max-width: 370px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

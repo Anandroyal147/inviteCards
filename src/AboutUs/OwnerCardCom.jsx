@@ -13,6 +13,7 @@ export default function OwnerCardCom(props) {
                     <div class="img-box">
                         <img src={props.src} alt="Madan Cards and Arts - Sivakasi" />
                     </div>
+                    
                     <div class="text-box hvr-bounce-to-bottom">
                         <h3 style={{ margin_bottom: 5, font_size: 18 }}> {props.name}</h3>
                         <h5 style={{ font_size: 15,color:'#337ab7' }} >{props.posting}</h5>

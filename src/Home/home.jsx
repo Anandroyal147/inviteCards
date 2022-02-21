@@ -10,6 +10,7 @@ import Footer2 from "../common/Footer2";
 import Footer from "../common/Footer";
 import CollectionsCard from "../common/collectionsCard";
 import SelfIntroCom from "../common/selfIntroCom";
+import './home.css';
 //import './home.css';
 export function Home() {
     return (
@@ -30,7 +31,6 @@ function Carousel() {
         background_position: 'left top'
     }
     return (
-
         <div className="corousel">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">

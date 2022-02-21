@@ -17,6 +17,11 @@ import CustWeddingCards from './Services/CustWeddingCards';
 import OffsetPrintSrv from './Services/OffsetPrintSrv';
 import CakeToppers from './Services/CakeToppers';
 import ContactUs from './ContactUs/ContactUs';
+import Login, { ForgotPassword } from './Account/Login';
+import Register from './Account/Register';
+
+
+
 
 function App() {
     return (
@@ -34,6 +39,9 @@ function App() {
                     <Route path='/offsetPrinting' element={<OffsetPrintSrv/>}/>            
                     <Route path='/cakeToppers' element={<CakeToppers/>}/>            
                     <Route path='/contactUs' element={<ContactUs/>}/>            
+                    <Route path='/login' element={<Login/>}/>            
+                    <Route path='/register' element={<Register/>}/>            
+                    <Route path='/forgotPassword' element={<ForgotPassword/>}/>            
                 </Routes>
             </Router>
         </div>

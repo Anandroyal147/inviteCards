@@ -1,5 +1,5 @@
 .body {
-    font-family: 'Rubik';
+    /* font-family: 'Rubik'; */
     overflow: hidden;
     color: #757575;
     font-size: 18px;
@@ -7,7 +7,7 @@
 }
 
 .App {
-    font-family: 'Rubik';
+    /* font-family: 'Rubik'; */
     color: #757575;
     background-color: #ffffff !important;
     font-size: 18px;
@@ -357,12 +357,102 @@ p {
     height: auto;
 }
 
-.welcome-section1 .welcome-content1 .title {
-    margin-bottom: 38px;
+
+/* LOGIN STYLES */
+
+.contact-section .contact-form input,
+.contact-section .contact-form textarea {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 68px;
+    border-radius: 35px;
+    background: #fff;
+    color: #757575;
+    font-size: 16px;
+    padding-left: 50px;
+    margin-bottom: 20px;
+    display: block;
 }
 
-.welcome-section1 .welcome-content1 .title h3 {
-    font-size: 35px;
-    font-weight: bold;
-    color: #212121;
+.contact-section .title span {
+    font-family: 'Pacifico';
+    font-size: 22px;
+    color: #A40D12;
+}
+
+.newCust {
+    text-decoration: none;
+    text-align: right;
+}
+
+
+/* BreadComB Wrapper */
+
+.breadcumb-wrapper {
+    overflow: hidden;
+    margin-top: -34px;
+    z-index: 99;
+}
+
+.breadcumb-wrapper ul.breadcumb {
+    background: #A40D12;
+    border-top-left-radius: 35px;
+    border-bottom-left-radius: 35px;
+    padding-left: 70px !important;
+    padding-right: 100px !important;
+    position: relative;
+    display: inline-block;
+    float: right;
+}
+
+.breadcumb-wrapper ul.breadcumb,
+.breadcumb-wrapper ul.breadcumb li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcumb-wrapper ul.breadcumb li {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.breadcumb-wrapper ul.breadcumb li a,
+.breadcumb-wrapper ul.breadcumb li span {
+    display: block;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 18px 0;
+    transition: all .4s ease;
+}
+
+.breadcumb-wrapper ul.breadcumb:after {
+    content: '';
+    width: 1000000px;
+    height: 100%;
+    background: #A40D12;
+    position: absolute;
+    top: 0;
+    left: 100%;
+}
+
+@media (max-width: 480px) {
+    .breadcumb-wrapper ul.breadcumb {
+        padding-left: 40px;
+        padding-right: 50px;
+    }
+    .spaceAround {
+        position: relative;
+        min-height: 1px;
+        /* padding-right: 15px;
+        padding-left: 15px;*/
+    }
+}
+
+.breadcumb-wrapper ul.breadcumb li span.sep {
+    margin-left: 15px;
+    margin-right: 15px;
+    color: #fff;
 }

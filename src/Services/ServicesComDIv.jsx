@@ -1,4 +1,5 @@
 import divider from "../Assets/divider.png"
+import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 
 
 export default function ServicesComDiv(props) {
@@ -19,7 +20,7 @@ export default function ServicesComDiv(props) {
                             <p align="justify">  Madan Cards &amp; Arts is also well known for its high quality printing service. Printing is done using well serviced and technologically updated machines and so, the jobs are completed on time with good results.      Since the colors are achieved using an
                                 advanced CIP-3 system, the results will remain uniform in the jobs
                                 irrespective of quantity.    Apart from printing, finishing...</p>
-                            <p align="justify"><a href={props.route} class="btn btn-primary btn-sm">view</a></p>
+                            <p align="justify"><Link to={props.route} class="btn btn-primary btn-sm">view</Link></p>
                         </div>
                     </div>
                 </div>
