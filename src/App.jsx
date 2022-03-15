@@ -19,7 +19,7 @@ import CakeToppers from './Services/CakeToppers';
 import ContactUs from './ContactUs/ContactUs';
 import Login, { ForgotPassword } from './Account/Login';
 import Register from './Account/Register';
-
+import Entry from './dataEntry/Entry';
 
 
 
@@ -41,7 +41,9 @@ function App() {
                     <Route path='/contactUs' element={<ContactUs/>}/>            
                     <Route path='/login' element={<Login/>}/>            
                     <Route path='/register' element={<Register/>}/>            
-                    <Route path='/forgotPassword' element={<ForgotPassword/>}/>            
+                    <Route path='/forgotPassword' element={<ForgotPassword/>}/>    
+                    <Route path='/dataEntry' element={<Entry/>}/>    
+                            
                 </Routes>
             </Router>
         </div>

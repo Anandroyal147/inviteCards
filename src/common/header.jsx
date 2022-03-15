@@ -63,7 +63,7 @@ export default function Header() {
                 <button onClick={toggleNav} className="Burger">
                     <FontAwesomeIcon icon={faBars} />
                 </button>
-                <img src={require("../Assets/logo.jpg")} className="Logo" alt="logo" />
+                <img src={require("../Assets/logo.jpg")} id='menu'  className="Logo" alt="logo" />
                 <CSSTransition
                     in={!isSmalScreen || isNavVisible}
                     timeout={350}
@@ -85,6 +85,7 @@ export default function Header() {
                             <li>  <Link className="link" to={'/services'}>Services</Link></li>
                             <li>  <Link className="link" to={'/contactUs'}>ContactUs</Link></li>
                             <li>  <Link className="link" to={'/login'}>Login</Link></li>
+                            {/* <li>  <Link className="link" to={'/dataEntry'}>DataEntry</Link></li> */}
                         </ul>
                     </nav>
                 </CSSTransition>

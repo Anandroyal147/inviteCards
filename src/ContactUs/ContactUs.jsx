@@ -9,7 +9,9 @@ import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons"
 import { faTwitter } from "@fortawesome/free-brands-svg-icons"
 import { faPinterest } from "@fortawesome/free-brands-svg-icons"
 import { faYoutube } from "@fortawesome/free-brands-svg-icons"
-
+import useForm from "../common/useForm";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function ContactUs() {
     return (
@@ -25,63 +27,25 @@ export default function ContactUs() {
 }
 
 function ContactUsDetails() {
-    const ValidateNumber = () => {
 
+    const formContact = () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ data: values })
+        };
+        fetch("http://localhost:3600/contactUs", requestOptions)
+            .then((json) => json.json())
+            .then(data => {
+                console.log(data)
+                toast(data.message)
+
+            })
+        console.log('contactValues------->', values)
     }
-    const handleValidation = () => {
-        let fields = this.state.fields;
-        let errors = {};
-        let formIsValid = true;
 
-        //Name
-        if (!fields["name"]) {
-            formIsValid = false;
-            errors["name"] = "Cannot be empty";
-        }
 
-        if (typeof fields["name"] !== "undefined") {
-            if (!fields["name"].match(/^[a-zA-Z]+$/)) {
-                formIsValid = false;
-                errors["name"] = "Only letters";
-            }
-        }
-
-        //Email
-        if (!fields["email"]) {
-            formIsValid = false;
-            errors["email"] = "Cannot be empty";
-        }
-
-        if (typeof fields["email"] !== "undefined") {
-            let lastAtPos = fields["email"].lastIndexOf("@");
-            let lastDotPos = fields["email"].lastIndexOf(".");
-
-            if (
-                !(
-                    lastAtPos < lastDotPos &&
-                    lastAtPos > 0 &&
-                    fields["email"].indexOf("@@") == -1 &&
-                    lastDotPos > 2 &&
-                    fields["email"].length - lastDotPos > 2
-                )
-            ) {
-                formIsValid = false;
-                errors["email"] = "Email is not valid";
-            }
-        }
-
-        this.setState({ errors: errors });
-        return formIsValid;
-    }
-    const contactSubmit=(e)=> {
-        e.preventDefault();
-
-        if (handleValidation()) {
-            alert("Form submitted");
-        } else {
-            alert("Form has errors.");
-        }
-    }
+    const { handleChange, handleSubmit, values, errors } = useForm(formContact)
 
     return (
         <>
@@ -93,22 +57,21 @@ function ContactUsDetails() {
                                 <div class="title">
                                     <h2>Send Message</h2>
                                 </div>
-                                <form name="u_reg" id="u_reg" method="post" novalidate="novalidate">
-
-                                    <input name="592a8f3367" type="hidden" id="authenticatelogin" value="afd5cc6b1db0d05a2a53b0f4484deebdc14c8459eb781c28d1224b948f6de15f" style={{ display: "none" }} />
-
+                                <form name="u_reg" id="u_reg" onSubmit={handleSubmit} method="post" novalidate="novalidate">
                                     <input name="psmt" type="hidden" id="psmt" value="addreg" style={{ display: "none" }} />
-                                    <ContactUsComInput name={"u_name"} id={"u_name"} placeholder={"Your Name"} autocomplete={"off"} />
-                                    <ContactUsComInput name={"u_email"} id={"u_email"} placeholder={"Email"} maxlength={"40"} autocomplete={"off"} />
-                                    <ContactUsComInput name={"u_mobile"} id={"u_mobile"} placeholder={"Mobile"} maxlength={"15"} onkeydown={ValidateNumber} autocomplete={"off"} />
-                                    <ContactUsComInput name={"u_city"} id={"u_city"} placeholder={"City"} maxlength={"15"} autocomplete={"off"} />
+                                    <ContactUsComInput name={"u_name"} id={"u_name"} errors={errors.username} handleChange={handleChange} placeholder={"Your Name"} autocomplete={"off"} />
+                                    <ContactUsComInput name={"u_email"} id={"u_email"} errors={errors.email} handleChange={handleChange} placeholder={"Email"} maxlength={"40"} autocomplete={"off"} />
+                                    <ContactUsComInput name={"u_mobile"} id={"u_mobile"} errors={errors.mobile} placeholder={"Mobile"} handleChange={handleChange} maxlength={"15"} autocomplete={"off"} />
+                                    <ContactUsComInput name={"u_city"} id={"u_city"} errors={errors.u_city} placeholder={"City"} handleChange={handleChange} maxlength={"15"} autocomplete={"off"} />
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <textarea name="u_message" id="u_message" class="form-control inp_design" cols="10" rows="8" placeholder="What you are looking for?"></textarea>
+                                                <textarea name="u_message" id="u_message" onChange={handleChange} class="form-control inp_design" cols="10" rows="8" placeholder="What you are looking for?"></textarea>
                                             </div>
+                                            {errors.u_message && <p className="error_txt">{errors.u_message}</p>}
                                         </div>
                                     </div>
+                                    <ToastContainer />
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">

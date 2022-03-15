@@ -11,8 +11,27 @@ import Footer from "../common/Footer";
 import CollectionsCard from "../common/collectionsCard";
 import SelfIntroCom from "../common/selfIntroCom";
 import './home.css';
+import { useState,useEffect } from "react";
+import Axios from "axios";
 //import './home.css';
 export function Home() {
+    const [items, setItems] = useState([]);
+
+    const fetchProducts = async () => {
+        const { data } = await Axios.post(
+            "http://localhost:3600/getallProducts"
+        );
+        const items = data;
+        setItems(items);
+        items.map(item => {
+            console.log(item.date)
+        })
+        console.log(items);
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
     return (
         <div>
             <Footer />
@@ -108,6 +127,7 @@ export function SelfIntro() {
 }
 
 export function RecentCollections() {
+   
     return (
         <section class="recent-projects sec-pad">
             <div class="thm-container">

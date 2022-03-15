@@ -1,0 +1,63 @@
+.submit_btn {
+    margin-top: 7%;
+    margin-bottom: 50px;
+}
+
+.lab {
+    text-align: left;
+    margin-left: 30px;
+    margin-right: auto;
+    width: 100%;
+    font-weight: 500;
+}
+
+.thm-container_add {
+    width: 60%;
+    max-width: 1200px;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.inputfl {
+    margin: 50px;
+    padding-left: 30px;
+}
+
+.rld-single-input input {
+    height: 48px;
+    line-height: 48px;
+    width: 100%;
+    padding: 0 20px;
+    border: 1px solid #D4D4D4;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.rld-single-input input {
+    margin-bottom: 20px;
+}
+
+.MuiButton-fullWidth {
+    width: 12% !important;
+}
+
+.errStl {
+    color: #bd1414;
+}
+
+.prod-form {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+
+/* .forms_cls{
+    margin-left: ;
+} */

@@ -1,0 +1,19 @@
+.addp {
+    text-align: center;
+    color: rgb(207, 57, 107);
+}
+
+.card-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0px !important;
+}
+
+.card {
+    margin-top: 50px;
+}
+
+.card-link {
+    text-align: center !important;
+}
