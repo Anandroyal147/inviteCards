@@ -20,7 +20,7 @@ const useForm = (callback) => {
 
                     setErrors({
                         ...errors,
-                        username: 'Username atleast have 5 letters'
+                        username: 'Username atleast have 2 letters'
                     })
                 } else {
                     // set the error state empty or remove the error for username input
@@ -39,7 +39,7 @@ const useForm = (callback) => {
                 ) {
                     setErrors({
                         ...errors,
-                        email: 'Enter a valid email address'
+                        email: 'Please Enter a valid email address'
                     })
                 } else {
 
@@ -86,12 +86,13 @@ const useForm = (callback) => {
 
                 break;
             case 'password':
-                if (
-                    !new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/).test(value)
+                if (value.length < 8
+                    // !new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/).test(value)
                 ) {
                     setErrors({
                         ...errors,
-                        password: 'Password should contains atleast 8 charaters and containing uppercase,lowercase and numbers'
+                        password: 'Password should contains atleast 8 charaters'
+                        //   password: 'Password should contains atleast 8 charaters and containing uppercase,lowercase and numbers'
                     })
                 } else {
 
@@ -100,7 +101,31 @@ const useForm = (callback) => {
 
                 }
                 break;
-
+            case 'u_f_name':
+                if (value.length < 1) {
+                    setErrors({ ...errors, u_f_name: 'Please Enter First Name' })
+                } else {
+                    let newObj = omit(errors, "u_f_name");
+                    setErrors(newObj);
+                }
+                break;
+            case 'u_cmp_name':
+                if (value.length < 1 || value === '') {
+                    setErrors({ ...errors, u_cmp_name: 'Please Enter Company Name' })
+                } else {
+                    let newObj = omit(errors, "u_cmp_name");
+                    setErrors(newObj);
+                }
+                break;
+            case 'u_pin_code':
+                console.log(value)
+                if (value.length <= 6 || value === '') {
+                    setErrors({ ...errors, u_pin_code: 'Please Enter Valid Pin Code' })
+                } else {
+                    let newObj = omit(errors, "u_pin_code");
+                    setErrors(newObj);
+                }
+                break;
             default:
                 break;
         }
@@ -115,8 +140,13 @@ const useForm = (callback) => {
         let val = event.target.value;
 
         validate(event, name, val);
+        if (name == 'myImg') {
+            console.log('myImgCalling------>')
+            var imageAsFile = event.target.files[0]
+            console.log("handleImageChange==>", imageAsFile)
+           // handleFireBaseUpload()
+        }
         //Let's set these values in state
-        console.log('useForm------>')
         setValues({
             ...values,
             [name]: val,
@@ -128,13 +158,14 @@ const useForm = (callback) => {
     const handleSubmit = (event) => {
         if (event) event.preventDefault();
 
+        console.log(Object.keys(values))
         if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
             callback();
-
+            console.log('use------->', values)
         } else {
-            console.log('useFormError------->', values)
+            console.log('useFormError------->', errors)
 
-            if (Object.keys(values).length === 0) {
+            if (Object.keys(values).length === 0 || Object.keys(values) === '') {
                 alert("Please Enter The Fields");
             }
         }

@@ -12,19 +12,21 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import Card from 'react-bootstrap/Card';
 import parse from "html-react-parser";
+import Loader from "../common/Loader";
+
 export default function Products() {
     const [items, setItems] = useState([]);
+    const [loader, setLoader] = useState(false)
 
     const fetchProducts = async () => {
+        setLoader(true)
         const { data } = await Axios.post(
             "http://localhost:3600/getallProducts"
         );
         const items = data;
         setItems(items);
-        items.map(item => {
-            console.log(item.date)
-        })
         console.log(items);
+        setLoader(false)
     };
 
     useEffect(() => {
@@ -36,7 +38,7 @@ export default function Products() {
             <Header />
             <BannerCom />
             {/* <Products /> */}
-            <Contents items={items} />
+            <Contents items={items} loader={loader} />
             <Footer2 />
         </>
     )
@@ -77,6 +79,8 @@ const Contents = (props) => {
             <Container>
                 <Row>
                     {content}
+                    {props.loader && <Loader />}
+
                 </Row>
             </Container>
             <div className="submit_btn text-center">

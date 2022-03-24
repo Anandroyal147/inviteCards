@@ -15,6 +15,7 @@
         "express": "^4.17.2",
         "firebase": "^9.6.4",
         "firebase-admin": "^10.0.2",
-        "nodemon": "^2.0.15"
+        "nodemon": "^2.0.15",
+        "react-history": "^0.18.2"
     }
 }

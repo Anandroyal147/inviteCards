@@ -39,28 +39,20 @@ app.post('/signup', (req, res) => {
     var password = result.password
     const ref = firebaseAdmin.ref('users');
     var isSent = false;
-
-    ref.orderByChild('u_email').once('value', (snapshot) => {
-        if (snapshot.val() != null) {
-            snapshot.forEach(child => {
-                console.log('Data Available----->', child.val().u_email, email)
-                if (child.val().u_email != email) {
-                    console.log(snapshot.key + ' was ' + snapshot.val().u_email);
-                    signup()
-                    console.log(result)
-                } else {
-                    if (!isSent) {
-                        isSent = true;
-                        final_response = { message: 'This email address is already Registered, Please Log In.' }
-                        res.send(final_response)
-                    }
-                }
-            });
-        } else {
-            console.log('No Data----->', snapshot.val())
+    ref.orderByChild('u_email').equalTo(email).once('value', (snapshot) => {
+        console.log('data---->', snapshot.val(), snapshot.exists())
+        if (!snapshot.exists()) {
+            // console.log(snapshot.key + ' was ' + snapshot.val().u_email);
             signup()
+            console.log(result)
+        } else {
+            if (!isSent) {
+                isSent = true;
+                final_response = { message: 'This email address is already Registered, Please Log In.' }
+                res.send(final_response)
+            }
         }
-    });
+    })
 
     function signup() {
         admin.auth().createUser({
@@ -72,16 +64,25 @@ app.post('/signup', (req, res) => {
             })
             .then((userCredential) => {
                 var successmsg = "User Registered Successfully"
-                final_response = { message: successmsg }
+                final_response = {
+                    message: successmsg,
+                    userCredential,
+                    ...result
+                }
+                console.log('success--->', userCredential)
                 if (!isSent) {
                     isSent = true
                     res.send(final_response)
                 }
-                console.log('success--->', userCredential)
+
             })
             .catch((error) => {
+                console.log('error---->', error)
                 var successmsg = "User Registered Successfully"
-                final_response = { message: successmsg }
+                final_response = {
+                    message: successmsg,
+                    ...result
+                }
                 if (!isSent) {
                     isSent = true
                     res.send(final_response)
@@ -98,32 +99,50 @@ app.post('/login', async(req, res) => {
     var result = {}
     console.log('login Data------>', req.body.data)
     var password = req.body.data.password
-    var email = req.body.data.usrname
-    await admin.auth().getUserByEmail(req.body.data.usrname)
+    var email = req.body.data.u_email
+    const ref = firebaseAdmin.ref('users');
+    var isSent = false;
+    await admin.auth().getUserByEmail(email)
         .then((user) => {
             currentUser = user.toJSON();
             console.log(currentUser)
             ref.orderByChild('u_email').equalTo(email).once('value', (snapshot) => {
                 console.log("data available", snapshot.val());
-                // if (snapshot.val() != null) {
-                //     snapshot.forEach(child => {
-                //         console.log('Data Available----->', child.val().u_email, email)
+                if (snapshot.val() != null) {
+                    snapshot.forEach(child => {
+                        console.log('Data Available----->', child.val().u_email, email)
+                        if (password === child.val().password) {
+                            result = {
+                                message: 'SuccessFully Logged In',
+                                currentUser: currentUser
+                            }
+                            console.log("There Is No Issue", password, child.val().password);
 
-                //     });
-                // } else {
-                //     console.log('No Data----->', snapshot.val())
-                //     signup()
-                // }
+                            if (!isSent) {
+                                console.log("Seent");
+
+                                res.status(200).send(result);
+                                isSent = true;
+                            }
+                        } else {
+                            console.log("There Is Some Issue", password, child.val().password);
+
+                        }
+                    });
+                } else {
+                    console.log('No Data----->', snapshot.val())
+
+                }
+
             });
 
-            if (password)
-                res.status(200).send(JSON.stringify(currentUser));
+
         }).catch(err => {
             result = {
                 message: 'Email or password invalid!'
             }
             res.status(200).send(result)
-            console.log(err);
+            console.log('error---->', err);
         });
 })
 app.post('/getall', (req, res) => {
@@ -181,7 +200,7 @@ app.post('/products', (req, res) => {
     var result = {
         name: req.body.data.name,
         description: req.body.data.description,
-        imgUrl: req.body.data.productImgUrl.imgUrl
+        imgUrl: req.body.data.imgUrl
     }
     firebaseAdmin.ref('products').push(result);
     console.log('products===>', result)
@@ -213,3 +232,35 @@ app.post('/contactUs', (req, res) => {
     res.send(final_response)
 
 })
+
+
+
+
+
+
+
+
+
+
+
+// ref.orderByChild('u_email').once('value', (snapshot) => {
+//     if (snapshot.val() != null) {
+//         snapshot.forEach(child => {
+//             console.log('Data Available----->', child.val(), email)
+//             if (child.val().u_email != email) {
+//                 console.log(snapshot.key + ' was ' + snapshot.val().u_email);
+//                 signup()
+//                 console.log(result)
+//             } else {
+//                 if (!isSent) {
+//                     isSent = true;
+//                     final_response = { message: 'This email address is already Registered, Please Log In.' }
+//                     res.send(final_response)
+//                 }
+//             }
+//         });
+//     } else {
+//         console.log('No Data----->', snapshot.val())
+//         signup()
+//     }
+// });

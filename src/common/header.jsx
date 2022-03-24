@@ -12,7 +12,7 @@ import { smallScreen, bigScreen } from '../reducers/windowSizeReducer'
 export default function Header() {
     const [isNavVisible, setNavVisibility] = useState(false);
     const [isSmalScreen, setIsSmallScreen] = useState(false);
-    const screen = useSelector((state) => state.screen.value)
+    const screen = useSelector((state) => state.windowSize.value)
     const dispatch = useDispatch()
     var navClass;
     useEffect(() => {

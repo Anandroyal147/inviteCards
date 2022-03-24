@@ -1,6 +1,6 @@
 import Footer from "../common/Footer"
 import Header from "../common/header"
-import { useState } from "react";
+import React, { useState } from "react";
 import Buttons from "../common/button";
 import './entry.css'
 import Select from 'react-select';
@@ -11,7 +11,9 @@ import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
 import { Circles } from 'react-loader-spinner';
 import { Hearts } from "react-loader-spinner";
-
+import useForm from "../common/useForm";
+import Loader from "../common/Loader";
+import { PDF } from "./PDF";
 const Entry = () => {
     return (
         <>
@@ -20,7 +22,6 @@ const Entry = () => {
             <BannerCom />
             <DataEntryContent />
             <Footer />
-
         </>
     )
 }
@@ -48,77 +49,41 @@ const DataEntryContent = () => {
         </div>
     )
 }
+
+
 const ImgUpload = (props) => {
     const [inputs, setInputs] = useState({});
     const [selectedImage, setSelectedImage] = useState(null);
-    const allInputs = { imgUrl: '' }
-    const [imageAsFile, setImageAsFile] = useState('')
-    const [imageAsUrl, setImageAsUrl] = useState(allInputs)
-    const [error, setError] = useState(false)
-    const [spinnerLoading, setSpinnerLoading] = useState(false);
-    const { promiseInProgress } = usePromiseTracker();
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        console.log(event.target.value)
-        setInputs(values => ({ ...values, [name]: value }))
+    const [loader, setLoader] = useState(false)
 
-    }
     const handleImgChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         console.log(event.target.files[0]);
-        setImageAsFile(event.target.files[0]);
+        var imageAsFile = event.target.files[0];
         console.log("handleImageChange==>", imageAsFile)
-      //  setSelectedImage(event.target.files[0]);
+        setSelectedImage(imageAsFile)
         setInputs(values => ({ ...values, [name]: value }))
-        
-        handleFireBaseUpload()
+        handleFireBaseUpload(imageAsFile)
     }
-    const handleSubmit = (event) => {
-        console.log('insideHandleSubmit==>', inputs)
-        if (inputs.name !== undefined && inputs.description !== undefined) {
-            saveData()
-            console.log('valid', inputs)
-        } else {
-            console.log('invalid', inputs)
-            setError(true)
-        }
-        // saveData()
-    }
+
     const saveData = () => {
+        setLoader(true)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ data: inputs })
+            body: JSON.stringify({ data: values })
         };
-        trackPromise(
-            fetch("http://localhost:3600/products", requestOptions)
-                .then((res) => { console.log(res.status) })
-        )
+        fetch("http://localhost:3600/products", requestOptions)
+            .then((res) => {
+                console.log(res.status)
+                setLoader(false)
+            })
     }
-    var loader = <>
-        <div
-            style={{
-                width: "100%",
-                height: "100",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}
-        >
-            {/* <Circles type="ThreeDots" color="#2BAD60" height="100" width="100" /> */}
-            <Hearts
-                type="Puff"
-                color="#00BFFF"
-                height={100}
-                width={100}
-            />
-        </div></>
 
-    const handleFireBaseUpload = e => {
+    const handleFireBaseUpload = (imageAsFile) => {
         //   e.preventDefault()
-        setSpinnerLoading(false)
+        setLoader(true)
         console.log('start of upload')
         // async magic goes here...
         if (imageAsFile === '') {
@@ -127,13 +92,13 @@ const ImgUpload = (props) => {
         const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
         //initiates the firebase side uploading 
         //  trackPromise(
-        uploadTask.on('state_changed', 
+        uploadTask.on('state_changed',
             (snapShot) => {
                 //takes a snap shot of the process as it is happening
-               // setSpinnerLoading(false)
+                // setSpinnerLoading(false)
                 console.log(snapShot)
             }, (err) => {
-               // setSpinnerLoading(false)
+                // setSpinnerLoading(false)
                 //catches the errors
                 console.log(err)
             }, () => {
@@ -143,21 +108,21 @@ const ImgUpload = (props) => {
 
                 storage.ref('images').child(imageAsFile.name).getDownloadURL()
                     .then(fireBaseUrl => {
-                        setImageAsUrl(prevObject => ({ ...prevObject, imgUrl: fireBaseUrl }))
-                        setInputs(values => ({ ...values, 'productImgUrl': imageAsUrl }));
-                        
-
+                        console.log('imageAsUrl', fireBaseUrl)
+                        values['imgUrl'] = fireBaseUrl
+                        console.log('imageAsUrl', values)
+                        setLoader(false)
                     })
 
             })
         //  )
     }
+    const { handleChange, handleSubmit, values, errors } = useForm(saveData)
 
     return (
         <>
             <div className="thm-container">
                 <div className=" text-center prod-form">
-
                     <div class="row">
                         <div class="col-md-3 hidden-xs">
                         </div>
@@ -167,12 +132,12 @@ const ImgUpload = (props) => {
                                     <form onSubmit={handleSubmit}>
                                         <div class="col-lg-12 col-md-12">
                                             <div class="rld-single-input">
-                                                <Input label={'Name Of Item'} requured={true} for={"staticEmail2"} name={"name"} value={inputs.name} error={error} handleChange={handleChange} />
+                                                <Input label={'Name Of Item'} error={errors.name} for={"staticEmail2"} name={"name"} handleChange={handleChange} />
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12">
                                             <div class="rld-single-input">
-                                                <Input label={'Description'} requured={true} for={"staticEmail2"} name={"description"} value={inputs.description} error={error} handleChange={handleChange} />
+                                                <Input label={'Description'} error={errors.description} for={"staticEmail2"} name={"description"} value={inputs.description} handleChange={handleChange} />
                                             </div>
                                         </div>
                                         <div className="inputfl ">
@@ -196,13 +161,7 @@ const ImgUpload = (props) => {
                     )
                 }
             </div >
-            {
-                error ?
-                    <div className="text-center errStl">
-                        < p > Please Enter The All Fields</p >
-                    </div > : <></>
-            }
-            {spinnerLoading && loader}
+            {loader && <Loader />}
             <div className="submit_btn text-center">
                 <Buttons type="submit" handleSubmit={handleSubmit} text={"Submit"} />
             </div>
@@ -268,6 +227,7 @@ function UserDetails(props) {
 function InputForm() {
     const [inputs, setInputs] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [isPdf, setIsPdf] = useState(false)
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -289,45 +249,48 @@ function InputForm() {
         };
         fetch("http://localhost:3600/store", requestOptions)
             .then((res) => { console.log(res.status) })
+        setIsPdf(true)
     }
     return (
 
         <>
-
-
-            <form class="row g-3 forms thm-container" onSubmit={handleSubmit}>
-                <Input label={'Name Of Item'} for={"staticEmail2"} name={"name"} value={inputs.name} handleChange={handleChange} />
-                <div class="row">
-                    <Col6Div input={<Input label={'Licence No'} for={"inputPassword2"} name={"licence_no"} value={inputs.licence_no} handleChange={handleChange} />} />
-                    <Col6Div input={<Input label={'License Value'} for={"staticEmail2"} name={"license_value"} value={inputs.license_value} handleChange={handleChange} />} />
-                </div>
-                <div class="row">
-                    <Col6Div input={<Input label={'Date'} for={"inputPassword2"} name={"date"} value={inputs.date} handleChange={handleChange} />} />
-                    <Col6Div input={<Input label={'Tax%'} for={"staticEmail2"} name={"tax"} value={inputs.tax} handleChange={handleChange} />} />
-                </div>
-                <div class="row">
-                    <Col6Div input={<Input label={'Quantity'} for={"staticEmail2"} name={"quantity"} value={inputs.quantity} handleChange={handleChange} />} />
-                    <Col6Div input={<Input label={'Profit%'} for={"staticEmail2"} name={"profit"} value={inputs.profit} handleChange={handleChange} />} />
-                </div>
-                <div class="row">
-                    <Col6Div input={<Input label={'Rate Inc Tax'} for={"staticEmail2"} name={"rate_inc_tax"} value={inputs.rate_inc_tax} handleChange={handleChange} />} />
-                    <Col6Div input={<Input label={'Rate Per'} for={"staticEmail2"} name={"rate_per"} value={inputs.rate_per} handleChange={handleChange} />} />
-                </div>
-                <div class="row">
-                    <Col6Div input={<Input label={'Amount Incl Tax'} for={"staticEmail2"} name={"amount_incl"} value={inputs.amount_incl} handleChange={handleChange} />} />
-                    <Col6Div input={<Input label={'Tax Amt'} for={"staticEmail2"} name={"tax_amt"} value={inputs.tax_amt} handleChange={handleChange} />} />
-                </div>
-                <Input label={'Amount'} for={"staticEmail2"} name={"amount"} value={inputs.amount} handleChange={handleChange} />
-                <div className="submit_btn text-center">
-                    <Buttons type={"submit"} handleSubmit={handleSubmit} text={"Submit"} />
-                </div>
-                {isSubmitted ?
-                    <div className="text-center">
-                        <QRCode value='' />
+            {isPdf ? <PDF data={inputs} /> :
+                <form class="row g-3 forms thm-container" onSubmit={handleSubmit}>
+                    <Input label={'Name Of Item'} for={"staticEmail2"} name={"name"} value={inputs.name} handleChange={handleChange} />
+                    <div class="row">
+                        <Col6Div input={<Input label={'Licence No'} for={"inputPassword2"} name={"licence_no"} value={inputs.licence_no} handleChange={handleChange} />} />
+                        <Col6Div input={<Input label={'License Value'} for={"staticEmail2"} name={"license_value"} value={inputs.license_value} handleChange={handleChange} />} />
                     </div>
-                    : <></>}
+                    <div class="row">
+                        <Col6Div input={<Input label={'Date'} for={"inputPassword2"} name={"date"} value={inputs.date} handleChange={handleChange} />} />
+                        <Col6Div input={<Input label={'Tax%'} for={"staticEmail2"} name={"tax"} value={inputs.tax} handleChange={handleChange} />} />
+                    </div>
+                    <div class="row">
+                        <Col6Div input={<Input label={'Quantity'} for={"staticEmail2"} name={"quantity"} value={inputs.quantity} handleChange={handleChange} />} />
+                        <Col6Div input={<Input label={'Profit%'} for={"staticEmail2"} name={"profit"} value={inputs.profit} handleChange={handleChange} />} />
+                    </div>
+                    <div class="row">
+                        <Col6Div input={<Input label={'Rate Inc Tax'} for={"staticEmail2"} name={"rate_inc_tax"} value={inputs.rate_inc_tax} handleChange={handleChange} />} />
+                        <Col6Div input={<Input label={'Rate Per'} for={"staticEmail2"} name={"rate_per"} value={inputs.rate_per} handleChange={handleChange} />} />
+                    </div>
+                    <div class="row">
+                        <Col6Div input={<Input label={'Amount Incl Tax'} for={"staticEmail2"} name={"amount_incl"} value={inputs.amount_incl} handleChange={handleChange} />} />
+                        <Col6Div input={<Input label={'Tax Amt'} for={"staticEmail2"} name={"tax_amt"} value={inputs.tax_amt} handleChange={handleChange} />} />
+                    </div>
+                    <Input label={'Amount'} for={"staticEmail2"} name={"amount"} value={inputs.amount} handleChange={handleChange} />
+                    <div className="submit_btn text-center">
+                        <Buttons type={"submit"} handleSubmit={handleSubmit} text={"Submit"} />
+                    </div>
+                    {isSubmitted ?
+                        <div className="text-center">
+                            <QRCode value='' />
+                        </div>
+                        : <></>}
 
-            </form>
+                </form>
+
+            }
+
         </>
 
 
@@ -337,23 +300,24 @@ function InputForm() {
 const Input = (props) => {
     function style(error) {
         if (error) {
-          return {
-            backgroundColor: "rgba(255, 0, 0, 0.5)" 
-            // Or any other style you prefer
-          };
+            return {
+                backgroundColor: "rgba(255, 0, 0, 0.5)"
+                // Or any other style you prefer
+            };
         }
-      }
+    }
     return (
         <>
             <div class="col-auto  rld-single-input">
                 <input type="text"
                     class="form-control"
                     placeholder={props.label}
-                    required={props.required}
                     name={props.name}
-                    value={props.value || ""}
                     style={style(props.error)}
-                    onChange={props.handleChange} />
+                    onChange={props.handleChange}
+                    required />
+                {props.error && <p style={{ textAlign: 'center', color: ' coral' }}>{props.error}</p>}
+
             </div>
         </>
     )

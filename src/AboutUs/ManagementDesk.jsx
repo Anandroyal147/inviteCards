@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { smallScreen } from '../reducers/windowSizeReducer'
 
 export default function ManagementDesk() {
-    const screen = useSelector((state) => state.screen.value)
+    const screen = useSelector((state) => state.windowSize.value)
     console.log(screen)
     return (
         <>
